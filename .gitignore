@@ -1,11 +1,7 @@
-# Claude Code system files
-CLAUDE.md
-
-# GitHub workflows and actions  
-.github/
-.github/workflows/
-*.yml
-*.yaml
+# Claude Code local state. CLAUDE.md is NOT listed here on purpose:
+# it is the authoring contract's fast path, not tool state, and it is
+# tracked so it cannot drift from AGENTS.md unreviewed.
+.claude/worktrees/
 
 # System files
 .DS_Store
@@ -45,3 +41,7 @@ node_modules/
 
 # Log files
 *.log
+
+# Packaged skill bundles (build artifacts; rebuild from skills/<name>/)
+*.zip
+__MACOSX/

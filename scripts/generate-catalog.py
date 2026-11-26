@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""Generate the prompt catalog from metadata comment blocks.
+
+Walks the prompt directories, parses each file's metadata (the HTML
+comment block with ## Field: sections, or YAML frontmatter if present),
+and writes:
+
+  catalog/prompts-index.yaml  - machine-readable index
+  catalog/INDEX.md            - human-readable index, grouped by directory
+
+Run from the repo root:  python3 scripts/generate-catalog.py
+Stdlib only; no dependencies.
+"""
+
+import re
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+DIRECTORIES = [
+    "prompts",
+    "prompt-generators",
+    "market-intelligence",
+    "workshops",
+    "loops",
+    "storytelling",
+    "skeletons",
+    "vibes",
+    "resumes-resignations-reactions",
+]
+# skills/ is nested one level deeper (skills/<name>/SKILL.md), so it is
+# collected separately rather than glob'd flat like the others.
+SKILLS_DIR = "skills"
+CATALOG_ORDER = DIRECTORIES + [SKILLS_DIR]
+SKIP_NAMES = {"README.md"}
+FIELDS = [
+    "Description",
+    "Usage Note",
+    "When NOT to Use",
+    "Instructions",
+    "Attribution",
+    "Licensing",
+    "Date",
+]
+
+
+def parse_comment_block(text):
+    """Extract ## Field: sections from the first HTML comment block."""
+    m = re.search(r"<!--(.*?)-->", text, re.DOTALL)
+    if not m:
+        return {}
+    block = m.group(1)
+    fields = {}
+    pattern = re.compile(
+        r"^##\s*(?P<name>[^:\n]+):\s*\n(?P<body>.*?)(?=^##\s|\Z)",
+        re.DOTALL | re.MULTILINE,
+    )
+    for fm in pattern.finditer(block):
+        name = fm.group("name").strip()
+        body = " ".join(fm.group("body").split())
+        fields[name] = body
+    dm = re.search(r"^Date:\s*(.+)$", block, re.MULTILINE)
+    if dm:
+        fields.setdefault("Date", dm.group(1).strip())
+    return fields
+
+
+def parse_frontmatter(text):
+    """Minimal YAML frontmatter parse: top-level 'key: value' lines only."""
+    if not text.startswith("---"):
+        return {}
+    m = re.match(r"^---\n(.*?)\n---", text, re.DOTALL)
+    if not m:
+        return {}
+    fields = {}
+    for line in m.group(1).splitlines():
+        km = re.match(r"^(\w[\w-]*):\s*(.+)$", line)
+        if km:
+            fields[km.group(1)] = km.group(2).strip().strip('"')
+    return fields
+
+
+def first_sentence(text, limit=180):
+    if not text:
+        return ""
+    s = re.split(r"(?<=[.!?])\s", text, maxsplit=1)[0]
+    return s if len(s) <= limit else s[: limit - 3] + "..."
+
+
+def yaml_escape(s):
+    return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def collect():
+    entries = []
+    for d in DIRECTORIES:
+        base = REPO / d
+        if not base.is_dir():
+            continue
+        for f in sorted(base.glob("*.md")):
+            if f.name in SKIP_NAMES or f.name.startswith("Dataset"):
+                continue
+            text = f.read_text(encoding="utf-8", errors="replace")
+            meta = parse_frontmatter(text)
+            comment = parse_comment_block(text)
+            entries.append(
+                {
+                    "name": f.stem,
+                    "path": f"{d}/{f.name}",
+                    "directory": d,
+                    "description": comment.get("Description")
+                    or meta.get("description", ""),
+                    "usage": comment.get("Usage Note", ""),
+                    "when_not": comment.get("When NOT to Use", ""),
+                    "date": comment.get("Date") or meta.get("date", ""),
+                    "has_metadata": bool(comment or meta),
+                }
+            )
+
+    skills_base = REPO / SKILLS_DIR
+    if skills_base.is_dir():
+        for folder in sorted(p for p in skills_base.iterdir() if p.is_dir()):
+            f = folder / "SKILL.md"
+            if not f.is_file():
+                continue
+            text = f.read_text(encoding="utf-8", errors="replace")
+            meta = parse_frontmatter(text)
+            comment = parse_comment_block(text)
+            entries.append(
+                {
+                    "name": folder.name,
+                    "path": f"{SKILLS_DIR}/{folder.name}/{f.name}",
+                    "directory": SKILLS_DIR,
+                    # Frontmatter wins here: it is what an agent routes on.
+                    "description": meta.get("description")
+                    or comment.get("Description", ""),
+                    "usage": comment.get("Usage Note", ""),
+                    "when_not": comment.get("When NOT to Use", ""),
+                    "date": comment.get("Date") or meta.get("date", ""),
+                    "has_metadata": bool(comment or meta),
+                }
+            )
+    return entries
+
+
+def write_yaml(entries, out):
+    # No generation timestamp on purpose: it would rewrite the file on
+    # every run, so a catalog diff would stop meaning anything changed.
+    lines = [
+        "# Generated by scripts/generate-catalog.py - do not edit by hand.",
+        f"count: {len(entries)}",
+        "prompts:",
+    ]
+    for e in entries:
+        lines.append(f"- name: {yaml_escape(e['name'])}")
+        lines.append(f"  path: {yaml_escape(e['path'])}")
+        lines.append(f"  directory: {e['directory']}")
+        for key in ("description", "usage", "when_not", "date"):
+            if e[key]:
+                lines.append(f"  {key}: {yaml_escape(e[key])}")
+        lines.append(f"  has_metadata: {str(e['has_metadata']).lower()}")
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_markdown(entries, out):
+    lines = [
+        "# Prompt Catalog",
+        "",
+        "Generated by `scripts/generate-catalog.py` - do not edit by hand.",
+        f"Assets: {len(entries)}",
+        "",
+    ]
+    for d in CATALOG_ORDER:
+        group = [e for e in entries if e["directory"] == d]
+        if not group:
+            continue
+        lines.append(f"## {d}/")
+        lines.append("")
+        lines.append("| Prompt | Description |")
+        lines.append("|---|---|")
+        for e in group:
+            desc = first_sentence(e["description"]) or "(no metadata block)"
+            link = e["path"].replace(" ", "%20")
+            lines.append(f"| [{e['name']}](../{link}) | {desc} |")
+        lines.append("")
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def main():
+    entries = collect()
+    catalog = REPO / "catalog"
+    catalog.mkdir(exist_ok=True)
+    write_yaml(entries, catalog / "prompts-index.yaml")
+    write_markdown(entries, catalog / "INDEX.md")
+    missing = [e["path"] for e in entries if not e["has_metadata"]]
+    print(f"Cataloged {len(entries)} assets -> catalog/")
+    if missing:
+        print(f"{len(missing)} without metadata blocks:")
+        for p in missing:
+            print(f"  - {p}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

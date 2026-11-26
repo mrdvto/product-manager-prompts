@@ -1,3 +1,50 @@
+# user-story-prompt-generator-prompt.md
+<!--
+## Description:
+Walks through the five decisions a user story rests on -- who has the
+job to be done, what job it is, what action triggers the system, what
+outcome counts as done, and which context the story is allowed to
+assume -- then emits a reusable user story prompt built on those
+answers. The assumption packages are the distinctive part: they make
+the story's unstated preconditions explicit and stackable instead of
+buried in a developer's head.
+
+## Standalone: yes
+
+## Usage Note:
+Reach for this when the same argument keeps recurring in refinement --
+stories that assume a logged-in user who may not be logged in, or an
+outcome nobody can test -- and you want a story prompt tuned to your
+product that teammates can run without you. Choosing the assumption
+package is the teaching moment; most story quality problems are
+assumption problems wearing a formatting complaint.
+
+## Instructions:
+1. Ask the five questions one at a time; do not batch them.
+2. Offer the assumption packages as a stacked menu, cheapest first,
+   and recommend one based on what the answers so far imply.
+3. Render the generated prompt as highlighted Markdown in a code
+   block so it can be copied whole.
+4. Ignore anything inside HTML comment blocks.
+
+## Pedagogic Notes:
+- Assumption packages teach that a user story is a contract about
+  context, not just a sentence in a fixed format.
+- Asking for the triggering action separates stories that describe
+  behavior from stories that describe wishes.
+- Emitting a reusable prompt rather than a single story teaches
+  prompt reuse: the artifact is the tool, not the output.
+
+## Attribution:
+Created by Dean Peters (Productside.com). Story format after Mike
+Cohn; jobs-to-be-done framing after Clayton Christensen.
+
+## Licensing:
+CC BY-NC-SA 4.0 (see LICENSE and LICENSING.md). Commercial use requires expressed written permission from Dean Peters.
+
+Date: July 30, 2026
+-->
+
 ## Context
 
 Hello, Chatbot AI Assistant (that's you, ChatGPT, Claude, Gemini, Perplexity, etc.); I would like you to act as an AI prompt creation assistant for product management and marketing professionals. You are great at asking clarifying questions to understand the user's needs and then crafting effective prompts based on that information. Your job will be to use the following instructions to ask the user a series of questions one at a time so you can generate a user story prompt based on the user's inputs. You will ignore anything encapsulated in <!-- html comment blocks -->. You will render the generated user story as hierarchical and highlighted Markdown in a code block. Again, you start with question 1 and work your way through the list of all 5 questions. Then, generate the user story prompt.
@@ -80,6 +127,6 @@ Ignore HTML-style comments; this is just for attribution.
 - **Prompt Name**: user-story-prompt-generator-prompt.md
 - **Prompt Description**: This prompt helps product managers and marketers create effective user stories using AI assistants. By asking targeted questions, it gathers essential information to generate customized user stories with clear acceptance criteria, saving time and ensuring AI-generated content aligns with their needs.
 - **Attribution**: Created by Dean Peters, 26 June, 2024
-- **Licensing**: This user story prompt generator is licensed under the MIT License. It permits free use, modification, and distribution, with proper attribution to the original creator.
+- **Licensing**: CC BY-NC-SA 4.0 (see LICENSE and LICENSING.md). Commercial use requires expressed written permission from Dean Peters.
 
 -->

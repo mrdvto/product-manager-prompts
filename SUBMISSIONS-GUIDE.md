@@ -50,21 +50,38 @@ Your prompt should create consistent, helpful experiences regardless of which AI
 Every prompt must include this metadata in comment blocks:
 
 ```markdown
-<!-- 
+<!--
 ## Description:
 Clear explanation of what this prompt does and why it matters for PMs
 
 ## Usage Note:
 What context or preparation someone needs before starting
 
+## Required Context Keys:
+1. First thing the AI needs to proceed
+2. Second thing the AI needs to proceed
+3. etc.
+
+## Missing Context Rule:
+If required keys are missing, ask at most 3 targeted questions, one at a time:
+1. "First clarifying question?"
+2. "Second clarifying question?"
+3. "Third clarifying question?"
+Then proceed with clearly labeled assumptions.
+
 ## Instructions:
 How the AI should guide the conversation and what it should focus on
+
+## Pedagogic Notes:
+- What strategic thinking skill does this prompt build?
+- What PM habit or mental model does it reinforce?
+- Why does the structure help users think better, not just work faster?
 
 ## Attribution:
 Where your methodology comes from, what frameworks you're using
 
 ## Licensing:
-MIT License (keeps everything open and shareable)
+CC BY-NC-SA 4.0 (see LICENSE and LICENSING.md). Commercial use requires expressed written permission from Dean Peters.
 
 Date: [When you created this]
 -->
@@ -75,6 +92,63 @@ Use the "one question at a time" approach:
 - Build context gradually instead of overwhelming users
 - Include fallback questions when essential information is missing
 - Guide users through strategic thinking, don't just extract information
+
+If your prompt runs a guided question loop, follow the **Generative
+Guidance pattern v2** (see `generative-guidance-pattern.md`): 3
+context-aware recommendations plus "Other" per question, standing
+bypasses ("take your best guess" and "drop in your notes"), loop
+control (skip / go back / stop early), a question budget, and a
+confirm-before-build summary at loop close. If your prompt builds
+against a template section by section, or does autonomous research
+with citations, see `interaction-modes.md` for those contracts.
+
+### When NOT to Use
+Include a short note (in the metadata comment or Usage Note) naming the
+situations where your prompt is the wrong tool and what to reach for
+instead. Teaching the misuse boundary is part of the pedagogy.
+
+### Decision Facilitation Contract
+Every prompt must close with a "Final Step" block offering exactly 4 numbered next options, recommended option first:
+
+```markdown
+## Final Step
+
+Offer exactly 4 next options:
+1. [Most useful next action] (Recommended)
+2. [Second option]
+3. [Third option]
+4. [Fourth option]
+
+Ask the user to reply with `1`, `2`, `3`, `4`, or a custom path.
+```
+
+### Assumptions to Validate
+Every prompt output must close the artifact with an explicit assumptions section:
+
+```markdown
+### Assumptions to Validate
+- [Assumption 1]
+- [Assumption 2]
+- [Assumption 3]
+```
+
+This keeps outputs honest and teaches PMs to separate evidence from inference.
+
+### Sticky-Note Rule
+All bullet items in prompt output must follow the sticky-note rule:
+- Keep each bullet 4 to 8 words
+- Use ASCII characters only — no emojis
+
+### Workload Inversion + Persona-First Framing
+- Do not ask users to pre-design the full artifact if the AI can infer likely structures.
+- Gather minimum context first, then propose candidate scopes/options.
+- Present recommendations in persona language first; business translation can follow.
+
+### Template Stability Requirement
+- Preserve established PM template structures when updating prompts.
+- Treat template sections and labels as stable output contracts unless a versioned change is intentional.
+- If you propose structural changes, label them as a new version and explain migration impact.
+- Keep compatibility in mind for teams exporting outputs into systems like Jira and Azure DevOps.
 
 ### Framework Grounding
 Base your prompt on proven product management methodologies:
@@ -151,7 +225,10 @@ Demonstrate understanding of how PM work intersects with:
 ### Where to Put Your Prompt
 - **Getting Real PM Sh!t Done:** `/prompts/` directory
 - **Prompts that build other prompts:** `/prompt-generators/` directory  
+- **Guided sessions that produce the artifact itself:** `/workshops/` directory
 - **Visual/narrative tools:** `/storytelling/` directory
+- **Autonomous research prompts:** `/market-intelligence/` directory
+- **Seasoned /goal, /loop, /batch, /routine recipes:** `/loops/` directory
 - **Workplace humor/therapy:** `/resumes-resignations-reactions/` directory
 - **Experimental approaches:** `/vibes/` directory
 - **Analysis tools:** `/skeletons/` directory
@@ -207,6 +284,22 @@ We'll look at:
 ### Missing Teaching Elements
 **Problem:** Just executes a task without building user expertise
 **Better:** Users understand strategic principles they can apply elsewhere
+
+### Emojis in Prompts
+**Problem:** Using emojis in headers, bullets, or titles (e.g., `📊 Feature Prioritization`)
+**Better:** Plain ASCII text only. Emojis break consistency across platforms and violate our output rendering rules.
+
+### Silent Template Drift
+**Problem:** Existing framework sections are renamed, reordered, or removed without notice  
+**Better:** Keep canonical structure stable or publish a clearly versioned update
+
+### Burden-Shifting Questions
+**Problem:** Prompt asks users to define structure the assistant should propose  
+**Better:** Prompt asks for minimal context, then proposes 3 candidate directions
+
+### Jargon-First Recommendations
+**Problem:** Options are framed only as internal business outcomes  
+**Better:** Options are framed in persona/user language first, then translated to business impact
 
 ---
 

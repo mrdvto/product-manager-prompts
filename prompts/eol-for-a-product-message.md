@@ -1,96 +1,256 @@
 # eol-for-a-product-message.md
-<!-- 
+<!--
 ## Description:
-This template provides a structured approach for crafting an End of Life (EOL) message for a product or service, ensuring clear communication about the transition. The EOL message is crucial for informing customers about the discontinuation, the reasons behind it, the impact on them, and the support measures in place.
+Creates a clear, empathetic End-of-Life (EOL) communication using a
+template that balances transparency, customer impact, and transition
+support. Right-sizes the message complexity: a minor feature
+deprecation gets a brief notice while a flagship product sunset gets
+a full phased communication with explicit lifecycle-gate definitions.
+Handles both "there is a replacement" and "there is no replacement"
+scenarios.
+
+## Standalone: yes
 
 ## Usage Note:
-Before utilizing this template in a Generative AI session, ensure the session is preloaded with context on:
-    - The specific product or service being phased out and its relationship to the company.
-    - The reasons for the EOL decision and the benefits to the customer.
-    - The replacement product or service and its key benefits and differentiators.
-    - The support measures and timeline for the transition.
-    - Optional but important: understanding customer impact and concerns (tip: you can use Bing/Copilot to capture this context and paste it into your session).
+Reach for this when a sunset decision is made and someone has to tell
+the customers -- the part that gets postponed until it becomes a
+support incident. Fast path: paste the internal decision memo, the
+migration plan, or the deprecation ticket. It also runs cold. Best
+used after eol-internal-enablement.md has prepared the support and
+sales teams, but works standalone.
+
+## When NOT to Use:
+- You have not decided whether to sunset yet: start with
+  eol-readiness-assessment.md.
+- You need the internal enablement materials first: use
+  eol-internal-enablement.md.
+
+## Required Context Keys:
+1. Product or feature being sunset
+2. Replacement path (another product, migration, or none)
+3. Rationale for EOL from customer and business perspectives
+4. Timeline phases and what each means for the customer
+
+## Missing Context Rule:
+If required keys are missing, ask at most 3 targeted questions, one at
+a time:
+1. "What product or feature is being discontinued, and is there a replacement, a migration path, or neither?"
+2. "Why is this EOL happening, and what customer outcomes improve or change?"
+3. "What timeline and support commitments should we communicate, and which lifecycle phases apply?"
+Then proceed with clearly labeled assumptions.
 
 ## Instructions:
-1. Make sure the above context has been clearly established in your session.
-2. Use the following prompt to guide the creation of the EOL message:
+1. Always determine the message complexity first. A minor feature
+   deprecation needs a brief, direct notice -- not a six-section
+   opus. A major product sunset needs the full template with
+   phase-gate definitions.
+2. Choose the correct transition path: Replacement, Migration (to
+   a third-party or different approach), or Graceful Exit (no
+   replacement -- focus on data protection and continuity).
+3. Include explicit lifecycle-phase definitions when there are
+   multiple dates customers need to track (EOS, EOE, EOM, EOL,
+   EOSRV). Omit phase definitions for simple one-date sunsets.
+4. Be painfully explicit about what continues and what stops at
+   each phase. Vague timelines erode trust.
+5. Keep language empathetic, specific, and action-oriented.
+6. Avoid defensiveness; focus on customer continuity and support.
+7. Keep every bullet sticky-note sized: 4 to 8 words per item.
+8. Use ASCII characters only.
+9. Unless instructed otherwise, render output in Markdown in a code
+   block.
 
-"Based on the context provided, please create an EOL message using the following EOL Messaging Template, rendered as Markdown in a Code Block."
+## Pedagogic Notes:
+- Right-sizing the message teaches PMs that a deprecation notice
+  and a product sunset letter are different communication tasks
+  with different audience needs.
+- The three transition paths (Replacement, Migration, Graceful
+  Exit) exist because "don't just tell customers 'good luck'" is
+  a real constraint, not a nice-to-have.
+- Explicit lifecycle-phase definitions teach the discipline of
+  distinguishing "end of sale" from "end of support" from "end of
+  service" -- distinctions that matter enormously to customers
+  running the product in production.
+- The "what continues and what stops" specificity builds the habit
+  of answering questions before they are asked.
 
 ## Attribution:
-Created by Dean Peters, July 11, 2024.
+Created by Dean Peters (Productside.com), July 11, 2024.
+Revised August 2026 to add right-sizing, phase-gate definitions,
+and the no-replacement path.
 
 ## Licensing:
-This document and the template contained within are licensed under the MIT License, permitting free use, modification, and distribution with proper attribution to the original creator.
+CC BY-NC-SA 4.0 (see LICENSE and LICENSING.md). Commercial use requires expressed written permission from Dean Peters.
 
-Date: July 11, 2024
+Date: August 9, 2026
 -->
----
-```markdown
-## EOL Messaging Template
 
-### Product Transition Narrative
+## Context
 
-**We are**: [Describe the company and its relationship to the product being phased out]
-- [Key point about the company's commitment to customers]
-- [Key point about the company's product evolution]
-- [Key point about the company's future vision]
+You are a product communications assistant drafting a customer-facing
+EOL message. Assume context is present. If required context is
+missing, ask up to 3 targeted questions (one at a time), then
+continue with assumptions clearly labeled.
 
-**Announcing**: 
-- [A single sentence that clearly states the EOL of the product and introduces its replacement]
+## Right-Sizing Guide
 
-**Because**: 
-- [Describe the reasons for the EOL decision, focusing on benefits to the customer]
-- [Reason 1: e.g., technological advancements]
-- [Reason 2: e.g., improved performance]
-- [Reason 3: e.g., better alignment with customer needs]
+Before drafting, determine the message complexity:
 
-**Which means for you**: 
-- [Describe the impact and benefits from the customer's perspective]
+**Brief Notice** (feature deprecation, internal tool, narrow audience):
+Use sections 1, 4, 6, and 7 only. A concise, direct communication.
 
-### Current Product Context
+**Standard Message** (commercial product with active customers):
+Use all sections. Include lifecycle-phase definitions if more than
+one date applies.
 
-**Our product** [name of the product being discontinued]
-- **is a** [brief description of the product and its primary function]
-- **that has served** [target customer/user] for [duration or timeframe]
-- **by providing** [key benefits or solutions the product offered]
+**Full Communication** (revenue-critical, regulated, or channel):
+Use all sections. Include lifecycle-phase definitions. Add a
+separate section for contract and compliance implications.
 
-### Customer Impact
+Then determine the transition path:
 
-**We understand that this may affect you by**:
-- [Potential impact 1 on customer operations or processes]
-- [Potential impact 2 on customer operations or processes]
-- [Potential impact 3 on customer operations or processes (if applicable)]
+**Path A -- Replacement**: A direct successor product exists.
+Use the Transition Solution and Differentiation sections.
 
-### Transition Solution
+**Path B -- Migration**: No direct replacement, but a migration
+path to another product, platform, or approach exists.
+Use the Migration Path section instead.
 
-**For** [target customer/user affected by the EOL]
-- **that currently use** [name of the product being phased out]
-- [name of the replacement product]
-- **is a** [definition of the replacement product category]
-- **that** [statement of benefit to the user, focusing on continuity and improvements].
+**Path C -- Graceful Exit**: No replacement or migration. Focus
+on data protection, export, and continuity support.
+Use the Graceful Exit section instead.
 
-### Differentiation and Continuity
+## Output Format
 
-- **Like** [product being phased out],
-- [name of the replacement product]
-- **provides** [how the replacement maintains key benefits of the old product]
-- **while also offering** [new benefits or improvements].
+Render Markdown in a code block using this exact structure:
 
-### Support and Next Steps
+### Sticky-Note Rule (Required)
+- Every bullet item must be 4 to 8 words.
+- Keep phrasing short and scannable.
+- Use ASCII characters only.
+
+## EOL Message: [Product Name]
+
+**Message complexity**: [Brief, Standard, or Full]
+**Transition path**: [Replacement, Migration, or Graceful Exit]
+
+### 1. Product Transition Narrative
+
+**We are**: [Company and its relationship to this product]
+- [Commitment to customers in 4-8 words]
+- [Product evolution context in 4-8 words]
+- [Forward-looking vision in 4-8 words]
+
+**Announcing**:
+- [Single sentence stating EOL and the transition path]
+
+**Because**:
+- [Reason focused on customer benefit]
+- [Reason focused on product trajectory]
+- [Reason focused on strategic direction]
+
+**Which means for you**:
+- [Customer-centered impact summary in 4-8 words]
+
+### 2. Current Product Context
+
+**Our product** [name of product being discontinued]
+- **is a** [brief description and function]
+- **that has served** [customer segment] for [timeframe]
+- **by providing** [key benefits in 4-8 words]
+
+### 3. Customer Impact
+
+**We understand this may affect you by**:
+- [Specific impact on daily workflow]
+- [Specific impact on integrations or data]
+- [Specific impact on cost or contracts]
+
+### 4. Transition Path
+
+(Use ONE of the following three variants based on the path.)
+
+#### Path A -- Transition Solution (Replacement exists)
+
+**For** [affected customer segment]
+- **that currently use** [sunset product]
+- **[replacement product]**
+- **is a** [product category]
+- **that** [continuity and improvement statement]
+
+**Like** [sunset product], **[replacement]**:
+- **provides** [continuity of key benefits]
+- **while also offering** [new benefits]
+- **with migration that** [effort and support summary]
+
+#### Path B -- Migration Path (no direct replacement)
+
+**For** [affected customer segment]
+- **your options include**:
+- [Alternative 1 with key tradeoff]
+- [Alternative 2 with key tradeoff]
+- [Alternative 3 with key tradeoff]
+
+**To help you evaluate and transition, we will**:
+- [Support measure for evaluation]
+- [Support measure for migration effort]
+
+#### Path C -- Graceful Exit (no replacement)
+
+**For** [affected customer segment]
+- **your data and continuity are protected**:
+- [How to export data and formats]
+- [Data retention period and policy]
+- [What happens to data after retention]
+
+**To help you transition, we will**:
+- [Support measure for data protection]
+- [Support measure for integration handoff]
+- [Resource or guide for moving forward]
+
+### 5. Lifecycle Phases (Standard and Full only)
+
+Include only the phases that apply. Be painfully specific about what
+each phase means for the customer.
+
+| Phase | Date | What It Means for You |
+|---|---|---|
+| EOS (End of Sale) | [date] | [Who can still buy, who cannot] |
+| EOE (End of Expansion) | [date] | [Seat/site/capacity limits] |
+| EOM (End of Maintenance) | [date] | [Bug fixes and patches stop] |
+| EOL (End of Life) | [date] | [Product is fully retired] |
+| EOSRV (End of Service) | [date] | [All support obligations end] |
+
+**Between now and [final date]**:
+- [What continues until each phase]
+- [What stops at each phase]
+- [What customers must do before each phase]
+
+### 6. Support and Next Steps
 
 **To ensure a smooth transition, we will**:
-- [Support measure 1]
-- [Support measure 2]
-- [Support measure 3]
+- [Specific support measure with timeline]
+- [Specific support measure with timeline]
+- [Specific support measure with timeline]
 
-### Timeline
+### 7. Call to Action
 
-- [Key date 1 and associated milestone]
-- [Key date 2 and associated milestone]
-- [Key date 3 and associated milestone]
+- [Clear first step for the customer]
+- [Where to get help: name, email, link]
+- [When the next communication will come]
 
-### Call to Action
+### Assumptions to Validate
+- [Assumption 1]
+- [Assumption 2]
+- [Assumption 3]
 
-- [Clear next steps for customers]
-- [Contact information for questions or assistance]
+## Final Step
+
+Offer exactly 4 next options:
+
+1. Generate a segmented version for enterprise vs. SMB customers (Recommended)
+2. Build the internal enablement pack for Support and Sales (using eol-internal-enablement.md)
+3. Generate a transition readiness checklist with owners and dates (using eol-checklist.md)
+4. Draft an executive escalation brief for high-risk accounts
+
+Ask the user to reply with `1`, `2`, `3`, `4`, `1 and 2`, or a custom
+path.

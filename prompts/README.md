@@ -10,6 +10,11 @@ This collection helps you with both the strategic work (market positioning, cust
 
 These aren't fill-in-the-blank templates. They're structured conversations with AI that help you think through complex problems step by step.
 
+**Scope note for this directory:**
+- Prompts in `/prompts/` generally assume relevant context is already loaded in session.
+- If you need the assistant to gather context and guide tradeoff decisions, start in [`/prompt-generators/`](../prompt-generators/).
+- For that facilitation method, see: [persona-first-decision-facilitation-loop.md](../prompt-generators/persona-first-decision-facilitation-loop.md).
+
 **The approach:**
 - AI asks you questions to understand your specific situation
 - Context builds gradually instead of overwhelming you upfront
@@ -48,12 +53,16 @@ Tools for understanding markets and customers:
 | **[proto-persona-profile.md](proto-persona-profile.md)** | Creating initial customer profiles | Proto-persona canvas |
 | **[customer-journey-mapping-prompt-template.md](customer-journey-mapping-prompt-template.md)** | Mapping the full customer experience | Customer journey methodology |
 | **[company-profile-executive-insights-research.md](company-profile-executive-insights-research.md)** | Competitive intelligence and market analysis | Market analysis framework |
+| **[discovery-interview-guide-prompt-template.md](discovery-interview-guide-prompt-template.md)** | Planning interviews that surface real behavior | Mom Test + continuous discovery |
+| **[win-loss-analysis-prompt.md](win-loss-analysis-prompt.md)** | Turning win/loss and churn debriefs into ground truth (or the interview guide to collect it) | Win/loss doctrine, HUMINT discipline |
+| **[tam-sam-som-market-sizing.md](tam-sam-som-market-sizing.md)** | Sizing a market end to end: research, bottom-up arithmetic, top-down cross-check, sensitivity | TAM/SAM/SOM, bottom-up modeling |
 
 ### Requirements & Execution
 Structured approaches to defining what to build:
 
 | Prompt | Best For | Framework Used |
 |--------|----------|----------------|
+| **[prd-prompt-template.md](prd-prompt-template.md)** | Generating a full PRD from session context | Canonical 9-section PRD structure |
 | **[user-story-prompt-template.md](user-story-prompt-template.md)** | Writing clear, testable user stories | Mike Cohn + Gherkin format |
 | **[user-story-splitting-prompt-template.md](user-story-splitting-prompt-template.md)** | Breaking down large stories effectively | Story splitting techniques |
 | **[backlog-epic-hypothesis.md](backlog-epic-hypothesis.md)** | Defining epics with testable hypotheses | Hypothesis-driven development |
@@ -65,14 +74,33 @@ Research and analytical frameworks for strategic decisions:
 |--------|----------|----------------|
 | **[pestel-analysis-prompt-template.md](pestel-analysis-prompt-template.md)** | Understanding macro-market forces | PESTEL framework |
 | **[recommendation-canvas-template.md](recommendation-canvas-template.md)** | Building business cases for decisions | Business case methodology |
+| **[premortem-prompt-template.md](premortem-prompt-template.md)** | Naming failure risks before you commit | Gary Klein premortem |
+| **[lean-ux-canvas-prompt-template.md](lean-ux-canvas-prompt-template.md)** | Framing initiatives as hypotheses and experiments | Gothelf Lean UX Canvas v2 |
 | **[reverse-engineer-IEEE830srs-to-PRD-prompt-template.md](reverse-engineer-IEEE830srs-to-PRD-prompt-template.md)** | Translating technical requirements | IEEE 830 standards |
+
+### Product End-of-Life (EOL)
+Right-sized tools for the full sunset lifecycle -- from the go/no-go decision through the last support call:
+
+| Prompt | Best For | Framework Used |
+|--------|----------|----------------|
+| **[eol-readiness-assessment.md](eol-readiness-assessment.md)** | Deciding whether to sunset and scoping the effort | 7-question diagnostic + 3-tier complexity model |
+| **[eol-checklist.md](eol-checklist.md)** | Phase-gated tactical checklist across up to 15 functional areas | GA/NSC/EOS/EOE/EOM/EOL/EOSRV lifecycle phases |
+| **[eol-stakeholder-sequence.md](eol-stakeholder-sequence.md)** | Ordering stakeholder conversations so each informs the next | Legal-first sequencing + EOL-specific Mendelow |
+| **[eol-internal-enablement.md](eol-internal-enablement.md)** | Preparing Support, Sales, and CS before the announcement | Acknowledge-Reframe-Offer objection pattern |
+| **[eol-for-a-product-message.md](eol-for-a-product-message.md)** | Customer-facing EOL announcement with or without a replacement | 3-path messaging (Replacement, Migration, Graceful Exit) |
+
+Every EOL prompt right-sizes output to the complexity of the sunset. A feature deprecation produces a short punch list; a flagship retirement produces the full cross-functional playbook.
 
 ### Communication & Vision
 Tools for stakeholder alignment and storytelling:
 
 | Prompt | Best For | Framework Used |
 |--------|----------|----------------|
+| **[stakeholder-map-prompt-template.md](stakeholder-map-prompt-template.md)** | Mapping who matters and how to engage them | Power x Interest grid |
+| **[incoming-request-breakdown.md](incoming-request-breakdown.md)** | Decoding what an inbound ask really wants | Chief-of-staff triage read |
 | **[visionary-press-release.md](visionary-press-release.md)** | Working backwards from customer value | Amazon Working Backwards |
+| **[agent-strategy-canvas-prompt-template.md](agent-strategy-canvas-prompt-template.md)** | Designing agentic AI systems with authorization boundaries | Agent Strategy Canvas (9-box) |
+| **[session-saver-prompt.md](session-saver-prompt.md)** | Capturing a session as portable context for a fresh start | Prompt anatomy capture schema |
 | **[storyboard-storytelling-prompt.md](storyboard-storytelling-prompt.md)** | Creating compelling product narratives | Storyboarding methodology |
 | **[futuristic-product-faq.md](futuristic-product-faq.md)** | Anticipating stakeholder questions | FAQ development process |
 

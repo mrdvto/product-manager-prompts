@@ -12,6 +12,15 @@ Every prompt in this collection serves dual purposes:
 
 This comment-driven pedagogy approach ensures that **using the tools teaches you how to build better tools**.
 
+### **Template Stability Principle**
+For this repository, output templates are not merely formatting devices; they are
+teaching artifacts and operational contracts.
+
+- Preserve canonical PM frameworks in output structure for consistency over time.
+- Improve context intake and facilitation while keeping output schema stable.
+- This is especially important for workflows that feed delivery systems such as Jira and ADO.
+- If a structural change is required, create and label a new version rather than silently changing the old one.
+
 ---
 
 ## The Anthropological Evolution Framework
@@ -70,7 +79,7 @@ Comments serve as **embedded learning materials**:
 ## Usage Note: [Context needed before starting]
 ## Instructions: [How AI should guide the conversation]
 ## Attribution: [Learning sources and methodology]
-## Licensing: MIT License for open knowledge sharing
+## Licensing: CC BY-NC-SA 4.0 (see LICENSE and LICENSING.md)
 -->
 ```
 
@@ -103,6 +112,47 @@ Ask the user the following questions **one at a time**:
 ```
 
 This prevents cognitive overload while ensuring comprehensive context gathering.
+
+### **Workload Inversion Rule**
+Do not make users define the full artifact up front when the assistant can infer and propose.
+
+**Preferred pattern:**
+1. Ask for minimum viable context (persona + pain + constraint)
+2. Propose 3 likely scopes or structures
+3. Recommend one option first with rationale
+4. Let user choose (`1`, `2`, `3`, `1 and 3`, or custom)
+
+### **Persona-First Recommendation Rule**
+At decision points, options should be phrased in the user's world first:
+- Persona-language recommendation: what this does for the user
+- Optional business translation: why this matters to the organization
+
+Avoid leading with internal business jargon when the user-facing framing is the real decision surface.
+
+### **Decision Turn Contract**
+When a prompt reaches a meaningful fork, use this exact interaction shape:
+
+```markdown
+Based on what you shared, here are the three best paths:
+1. [Persona-first option] (Recommended) - [why now]
+2. [Persona-first option] - [tradeoff]
+3. [Persona-first option] - [tradeoff]
+
+Reply with `1`, `2`, `3`, `1 and 3`, or your own path.
+```
+
+After response:
+- Confirm choice in one sentence
+- Show progress
+- Ask only the next best question
+
+### **AFCI + Fixed Output Contract**
+Use Artifact-First Context Intake (AFCI) to reduce user burden:
+1. Extract context from artifacts/session first
+2. Ask up to 3 targeted questions only for missing keys
+3. Proceed with labeled assumptions if still incomplete
+
+Then render the canonical output template exactly (unless user explicitly requests changes).
 
 ---
 
